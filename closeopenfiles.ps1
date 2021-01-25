@@ -14,11 +14,13 @@ Get-SmbOpenFile -FileId fileidnumber | select-object -property *
 
 Close-SmbOpenFile -FileId fileidnumber
 
-#For lots of the same open file, review the following command
-#Replace "sharedrive:\sharename\path\filename.ext" with file name and path of open files
+#For multiple instances of the same open file, review the following command
+#Replace "filepath.extension" with as much of the file path and extension as possible.
 
+Get-SmbOpenFile | where {$_.Path –like "*filepath.extension"} | Close-SmbOpenFile -Force
 
+#Script to get specific open shared file with user identifying information
 get-smbopenfile | where-object -property path -like "sharedrive:\sharename\path\filename.ext" | ft clientusername,path
 
-#Change "get-smbopenfile *" to "close-smbopenfile *" for above file. You may receive multiple red CimExceptions for this script.
+
 #By rerunning the "get-smbopenfile" line, you can ensure the script ran successfully if no results are returned.
